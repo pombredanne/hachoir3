@@ -295,7 +295,9 @@ class Inode(FieldSet):
 
 
 class Directory(Parser):
-    PARSER_TAGS = {}
+    PARSER_TAGS = {
+        "description": "Directory of EXT2/EXT3 file system",
+    }
     endian = LITTLE_ENDIAN
 
     def createFields(self):
@@ -674,7 +676,7 @@ class Group(SeekableFieldSet):
                     continue
                 self.seekBlock(blocks[b].value)
                 yield CustomFragment(self, "inode[%d]block[]" % i, self.root.block_size * 8,
-                    None, group=group)
+                                     None, group=group)
             if blocks[12].value:
                 # indirect block
                 self.seekBlock(blocks[12].value)
@@ -685,7 +687,7 @@ class Group(SeekableFieldSet):
                         continue
                     self.seekBlock(b.value)
                     yield CustomFragment(self, "inode[%d]block[]" % i, self.root.block_size * 8,
-                        None, group=group)
+                                         None, group=group)
             if blocks[13].value:
                 # TODO: double-indirect block
                 pass

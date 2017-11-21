@@ -6,9 +6,9 @@ Hachoir
    :alt: Latest release on the Python Cheeseshop (PyPI)
    :target: https://pypi.python.org/pypi/hachoir3
 
-.. image:: https://travis-ci.org/haypo/hachoir3.svg?branch=master
+.. image:: https://travis-ci.org/vstinner/hachoir3.svg?branch=master
    :alt: Build status of hachoir3 on Travis CI
-   :target: https://travis-ci.org/haypo/hachoir3
+   :target: https://travis-ci.org/vstinner/hachoir3
 
 Hachoir is a Python library to view and edit a binary stream field by field.
 In other words, Hachoir allows you to "browse" any binary stream just like you
@@ -21,7 +21,7 @@ by butchers to divide meat into long tubes; Hachoir is used by computer
 butchers to divide binary files into fields.
 
 * `Hachoir3 website <http://hachoir3.readthedocs.io/>`_ (source code, bugs)
-* `Hachoir3 on GitHub (Source code, bug tracker) <https://github.com/haypo/hachoir3>`_
+* `Hachoir3 on GitHub (Source code, bug tracker) <https://github.com/vstinner/hachoir3>`_
 * License: GNU GPL v2
 
 Command line tools using Hachoir parsers:
@@ -33,4 +33,4 @@ Command line tools using Hachoir parsers:
 
 Hachoir3 is written for Python 3.3+, it uses the new ``yield from`` syntax.
 For Python 2, see the `Hachoir project on Bitbucket
-<https://bitbucket.org/haypo/hachoir>`_.
+<https://bitbucket.org/vstinner/hachoir>`_.

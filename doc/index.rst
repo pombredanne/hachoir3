@@ -10,7 +10,7 @@ meat grinder (meat mincer), which is used by butchers to divide meat into long
 tubes; Hachoir is used by computer butchers to divide binary files into fields.
 
 * `Hachoir3 website <http://hachoir3.readthedocs.io/>`_ (this site)
-* `Hachoir3 at GitHub <https://github.com/haypo/hachoir3>`_ (source code, bugs)
+* `Hachoir3 at GitHub <https://github.com/vstinner/hachoir3>`_ (source code, bugs)
 
 Command line tools using Hachoir parsers:
 
@@ -19,7 +19,7 @@ Command line tools using Hachoir parsers:
 * :ref:`hachoir-grep <grep>`: find a text pattern in a binary file
 * :ref:`hachoir-strip <strip>`: modify a file to remove metadata
 
-See also `Hachoir at Bitbucket <https://bitbucket.org/haypo/hachoir/>`_:
+See also `Hachoir at Bitbucket <https://bitbucket.org/vstinner/hachoir/>`_:
 original Hachoir for Python 2.
 
 

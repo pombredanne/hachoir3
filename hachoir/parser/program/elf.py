@@ -3,6 +3,9 @@ ELF (Unix/BSD executable file format) parser.
 
 Author: Victor Stinner, Robert Xiao
 Creation date: 08 may 2006
+Reference:
+- System V Application Binary Interface - DRAFT - 10 June 2013
+  http://www.sco.com/developers/gabi/latest/contents.html
 """
 
 from hachoir.parser import HachoirParser
@@ -37,6 +40,7 @@ class ElfHeader(FieldSet):
         19: "Intel 80960",
         20: "PowerPC 32-bit",
         21: "PowerPC 64-bit",
+        22: "IBM S390",
         36: "NEC V800",
         37: "Fujitsu FR20",
         38: "TRW RH-32",
@@ -138,24 +142,32 @@ class ElfHeader(FieldSet):
 class SectionFlags(FieldSet):
 
     def createFields(self):
+        field_thunks = (
+            lambda: Bit(self, "is_writable", "Section contains writable data?"),
+            lambda: Bit(self, "is_alloc", "Section occupies memory?"),
+            lambda: Bit(self, "is_exec", "Section contains executable instructions?"),
+            lambda: NullBits(self, "reserved[]", 1),
+            lambda: Bit(self, "is_merged", "Section might be merged to eliminate duplication?"),
+            lambda: Bit(self, "is_strings", "Section contains nul terminated strings?"),
+            lambda: Bit(self, "is_info_link", "sh_info field of this section header holds section header table index?"),
+            lambda: Bit(self, "preserve_link_order", "Section requires special ordering for linker?"),
+            lambda: Bit(self, "os_nonconforming", "Section rqeuires OS-specific processing?"),
+            lambda: Bit(self, "is_group", "Section is a member of a section group?"),
+            lambda: Bit(self, "is_tls", "Section contains TLS data?"),
+            lambda: Bit(self, "is_compressed", "Section contains compressed data?"),
+            lambda: NullBits(self, "reserved[]", 8),
+            lambda: RawBits(self, "os_specific", 8, "OS specific flags"),
+            lambda: RawBits(self, "processor_specific", 4, "Processor specific flags"),
+        )
+
         if self.root.endian == BIG_ENDIAN:
             if self.root.is64bit:
                 yield RawBits(self, "reserved[]", 32)
-            yield RawBits(self, "processor_specific", 4, "Processor specific flags")
-            yield NullBits(self, "reserved[]", 17)
-            yield Bit(self, "is_tls", "Section contains TLS data?")
-            yield NullBits(self, "reserved[]", 7)
-            yield Bit(self, "is_exec", "Section contains executable instructions?")
-            yield Bit(self, "is_alloc", "Section occupies memory?")
-            yield Bit(self, "is_writable", "Section contains writable data?")
+            for t in reversed(field_thunks):
+                yield t()
         else:
-            yield Bit(self, "is_writable", "Section contains writable data?")
-            yield Bit(self, "is_alloc", "Section occupies memory?")
-            yield Bit(self, "is_exec", "Section contains executable instructions?")
-            yield NullBits(self, "reserved[]", 7)
-            yield Bit(self, "is_tls", "Section contains TLS data?")
-            yield RawBits(self, "processor_specific", 4, "Processor specific flags")
-            yield NullBits(self, "reserved[]", 17)
+            for t in field_thunks:
+                yield t()
             if self.root.is64bit:
                 yield RawBits(self, "reserved[]", 32)
 
@@ -166,6 +178,7 @@ class SymbolStringTableOffset(UInt32):
         section_index = self['/header/shstrndx'].value
         section = self['/section[' + str(section_index) + ']']
         text = section.value[self.value:]
+        text = text.decode('utf-8')
         return text.split('\0', 1)[0]
 
 

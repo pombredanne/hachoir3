@@ -318,6 +318,8 @@ def makePrintable(data, charset, quote=None, smart=True):
             data = ''.join((quote, data, quote))
     elif quote:
         data = "(empty)"
+    else:
+        data = ""
     data = data.encode(charset, "backslashreplace")
     if smart:
         # Replace \x00\x01 by \0\1
@@ -388,16 +390,16 @@ def binarySearch(seq, cmp_func):
 
 def lowerBound(seq, cmp_func):
     f = 0
-    l = len(seq)
-    while l > 0:
-        h = l >> 1
+    seqlen = len(seq)
+    while seqlen > 0:
+        h = seqlen >> 1
         m = f + h
         if cmp_func(seq[m]):
             f = m
             f += 1
-            l -= h + 1
+            seqlen -= h + 1
         else:
-            l = h
+            seqlen = h
     return f
 
 
